@@ -65,7 +65,7 @@ function Install-Prerequisite
     }
 
     Write-Output "Installing build prerequisites"
-    $code = ".\Install-BuildPrerequisites.ps1"
+    $code = ".\Install-BuildPrerequisite.ps1"
     if (Confirm-AdministratorContext)
     {
         Invoke-Command "$code"
