@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Visual Studio 2015
 build: false
 build_script:
   - ps: .\Invoke-Build.ps1 -AppVeyor
