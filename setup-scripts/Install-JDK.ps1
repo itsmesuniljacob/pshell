@@ -25,7 +25,7 @@ if($reply -match "[yY]") {
   }
   ###############################
 
-  Write-Host 'Checking if Java is already installed'
+  'Checking if Java is already installed'
 
   # if((Test-Path "c:\Program Files (x86)\Java") -Or (Test-Path "c:\Program Files\Java"))
   # {
