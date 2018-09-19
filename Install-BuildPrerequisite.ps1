@@ -27,7 +27,7 @@
 # }
 #
 # "Doing this only as admin."
-Write-Host "Checking for elevation... "
+"Checking for elevation... "
 $CurrentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
 if (($CurrentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) -eq $false)
 {
@@ -35,11 +35,11 @@ if (($CurrentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrato
 	If ($ValidateOnly) { $ArgumentList = $ArgumentList + " -ValidateOnly" }
 	If ($SkipValidation) { $ArgumentList = $ArgumentList + " -SkipValidation $SkipValidation" }
 	If ($Mode) { $ArgumentList = $ArgumentList + " -Mode $Mode" }
-	Write-Host "elevating"
+  "elevating"
 	Start-Process powershell.exe -Verb RunAs -ArgumentList ($ArgumentList -f ($myinvocation.MyCommand.Definition)) -Wait
 	Exit
 }
-write-host "in admin mode.."
+"in admin mode.."
 #Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.201 - Scope CurrentUser -Force
 Install-Module -Name "PSScriptAnalyzer" -Scope CurrentUser -Force -SkipPublisherCheck
 Install-Module -Name "Pester" -Scope CurrentUser -Force -SkipPublisherCheck
