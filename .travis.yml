@@ -12,7 +12,7 @@ matrix:
           packages:
             - powershell
 install:
-  - pwsh Invoke-Admin.ps1
+  - pwsh runas.ps1
   - pwsh Install-BuildPrerequisite.ps1
 script:
   - pwsh Invoke-Build.ps1
