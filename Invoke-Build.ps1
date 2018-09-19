@@ -1,74 +1,93 @@
 param([switch]$AppVeyor=$false)
-$ErrorActionPreference="Stop"
+ $ErrorActionPreference="Stop"
 function Confirm-AdministratorContext
 {
     $administrator = [Security.Principal.WindowsBuiltInRole] "Administrator"
     $identity = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
     $identity.IsInRole($administrator)
 }
-
-function Invoke-StaticAnalysis
+ function Use-AdministratorContext
+{
+    if (-not (Confirm-AdministratorContext))
+    {
+        $arguments = "& '" + $myinvocation.mycommand.definition + "'"
+        Start-Process powershell -Verb runAs -ArgumentList $arguments
+        Break
+    }
+}
+ function Install-BuildPrerequisite
+{
+    foreach ($arg in $args)
+    {
+        Write-Output "Checking build prerequisite module $arg"
+        if (-not (Get-Module -Name $arg))
+        {
+            Write-Output "Requesting elevated permissions to install build prerequisite module $arg"
+            Use-AdministratorContext
+            Write-Output "Installing build prerequisite module $arg"
+            Install-Module -Name $arg -Force -SkipPublisherCheck
+        }
+        else
+        {
+            Write-Output "Confirmed already installed build prerequisite module $arg"
+        }
+    }
+}
+ function Invoke-StaticAnalysis
 {
     $result = Invoke-ScriptAnalyzer -Path "." -Recurse
-    $result
-    if ($result.Length -gt 0)
+@@ -44,14 +15,11 @@ function Invoke-StaticAnalysis
     {
         throw "Build failed. Found $($result.Length) static analysis issue(s)"
+    }
+    else
+    {
+        Write-Output "Static analysis findings clean"
     }
     Write-Output "Static analysis findings clean"
 }
 function Invoke-Build
 {
-    if ($Jenkins)
+    if ($AppVeyor)
+    if ($AppVeyor)
     {
-        Write-Output "Building in Jenkins build CI server context"
+        Write-Output "Building in AppVeyor build CI server context"
+    }
+@@ -80,7 +48,41 @@ function Invoke-Test
+    }
+}
+ function Confirm-Prerequisite
+{
+    (
+        (Get-Module -Name PSScriptAnalyzer).Length *
+        (Get-Module -Name Pester).Length *
+        (Get-PackageProvider -Name Nuget).Length
+    ) -ne 0
+}
+ function Install-Prerequisite
+{
+    if ((Confirm-Prerequisite))
+    {
+        return
+    }
+     Write-Output "Installing build prerequisites"
+    $code = ".\Install-BuildPrerequisites.ps1"
+    if (Confirm-AdministratorContext)
+    {
+        Invoke-Command "$code"
     }
     else
     {
-        Write-Output "Building in normal context"
+        Start-Process -FilePath powershell.exe -ArgumentList $code -verb RunAs
     }
-    Write-Output "Checking static analysis findings"
-    Invoke-StaticAnalysis
-    Write-Output "Running tests"
-    Invoke-Test
-}
-
-function Send-TestResult([string]$resultsPath)
-{
-    # If needed, upload test results to build server here
-}
-function Invoke-Test
-{
-    $resultsPath = ".\TestResults.xml"
-    Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $resultsPath
-    if ($Jenkins)
+     if (-not (Confirm-Prerequisite))
     {
-        Send-TestResult $resultsPath
+        throw "Build Failed. Installation of build prerequisites failed."
     }
 }
-
-function Confirm-Prerequisite
-{
-    $success=$false
-    try {
-        $success=((
-            (Get-Command -Module PSScriptAnalyzer).Length *
-            (Get-Command -Module Pester).Length *
-            (Get-PackageProvider | Where-Object {$_.Name -eq "NuGet"}).Length
-        ) -ne 0)
-    }
-    catch {
-        Write-Output "One or more prerequisites not available: $_Exception.Message"
-        break
-    }
-    $success
-}
-
-Write-Output "Build starting"
-if (-not (Confirm-Prerequisite))
-{
-    throw "Build failed. Prerequisites missing. Please run Install-BuildPrerequisite.ps1 (running as administrator if needed)"
-}
+ Write-Output "Build starting"
+Install-BuildPrerequisite "PSScriptAnalyzer" "Pester"
+#Install-Prerequisite
 Write-Output "Building"
 Invoke-Build
-Write-Output "Build complete"
+Write-Output "Build complete" 
