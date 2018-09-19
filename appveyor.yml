@@ -1,5 +1,6 @@
 image: Visual Studio 2015
 build: false
+before_build:
+  - ps: .\Install-BuildPrerequisite.ps1
 build_script:
-  - ps: .\Invoke-BuildPrerequisite.ps1
   - ps: .\Invoke-Build.ps1 -AppVeyor
