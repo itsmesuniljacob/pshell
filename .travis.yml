@@ -14,4 +14,5 @@ matrix:
 install:
   - pwsh Install-BuildPrerequisite.ps1
 script:
+  - pwsh Invoke-Build.ps1
   - pwsh -f "setup-scripts/test.ps1"
