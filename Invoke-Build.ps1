@@ -1,4 +1,4 @@
-param([switch]$Jenkins=$false)
+param([switch]$AppVeyor=$false)
 $ErrorActionPreference="Stop"
 function Confirm-AdministratorContext
 {

@@ -1,11 +1,4 @@
-version: 1.0.{build}
-os: WMF 5
-# Skip on updates to the readme
-skip_commits:
-  message: /readme*/
-
-install:
-  - ps: Install-PackageProvider -Name NuGet -Force
-  - ps: Install-Module PsScriptAnalyzer -Force
-
+image: Visual Studio 2017
 build: false
+build_script:
+  - ps: .\Invoke-Build.ps1 -AppVeyor
