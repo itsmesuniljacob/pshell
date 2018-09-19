@@ -82,7 +82,7 @@ function Install-Prerequisite
 }
 
 Write-Output "Build starting"
-#Install-Prerequisite
+Install-Prerequisite
 Write-Output "Building"
 Invoke-Build
 Write-Output "Build complete"
