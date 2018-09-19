@@ -29,5 +29,5 @@ else
 "Doing this only as admin."
 
 Install-PackageProvider -Name "NuGet" -Force
-Install-Module -Name "PSScriptAnalyzer" -Force -SkipPublisherCheck
-Install-Module -Name "Pester" -Force -SkipPublisherCheck
+Install-Module -Name "PSScriptAnalyzer" -Scope CurrentUser -Force -SkipPublisherCheck
+Install-Module -Name "Pester" -Scope CurrentUser -Force -SkipPublisherCheck
