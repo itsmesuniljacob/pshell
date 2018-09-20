@@ -12,6 +12,8 @@ matrix:
           packages:
             - powershell
 install:
-  - pwsh -f "/setup-scripts/Install-JDK.ps1"
+  - $TRAVIS_BUILD_DIR
+  - Install-Module -Name "PSScriptAnalyzer" -Scope CurrentUser -Force -SkipPublisherCheck
+  # - pwsh -f "/setup-scripts/Install-JDK.ps1"
 # script:
 #   - pwsh Invoke-Build.ps1
