@@ -12,6 +12,6 @@ matrix:
           packages:
             - powershell
 install:
-  - pwsh ./Install-Dependencies.ps1
+  - pwsh Install-BuildPrerequisite.ps1
 # script:
 #   - pwsh Invoke-Build.ps1
