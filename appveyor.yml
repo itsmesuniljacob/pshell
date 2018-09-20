@@ -1,4 +1,7 @@
 image: Visual Studio 2015
+branches:
+  only:
+    - test
 build: false
 before_build:
   - ps: .\Install-BuildPrerequisite.ps1
