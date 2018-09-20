@@ -12,7 +12,6 @@ matrix:
           packages:
             - powershell
 install:
-  - Install-Module -Name "PSScriptAnalyzer" -Scope CurrentUser -Force -SkipPublisherCheck
-  # - pwsh -f "/setup-scripts/Install-JDK.ps1"
+  - pwsh Install-BuildPre.ps1
 # script:
 #   - pwsh Invoke-Build.ps1
