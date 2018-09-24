@@ -49,9 +49,9 @@ describe 'Test-Path' {
     $value | should be True
   }
 
-  it 'should check proxy settings' {
-    $path | should Contain 'http://165.225.104.34:9480'
-  }
+  # it 'should check proxy settings' {
+  #   $path | should Contain 'http://165.225.104.34:9480'
+  # }
 
   it 'should have user' {
     $path | should Contain 'user'
