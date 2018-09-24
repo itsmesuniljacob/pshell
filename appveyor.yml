@@ -1,7 +1,8 @@
 image: Visual Studio 2015
-branches:
-  only:
-    - test
+# branches:
+#   only:
+#     - master
+#     - test
 build: false
 before_build:
   - ps: .\Set-GitConfiguration.ps1 -reply S.Jacob s@to.com
