@@ -54,10 +54,10 @@ describe 'Test-Path' {
   # }
 
   it 'should have user' {
-    $path | should Contain 'user'
+    $path | should -FileContentMatch 'user'
   }
 
   it 'should have email' {
-    $path | should Contain "[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    $path | should -FileContentMatch "[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
   }
 }
