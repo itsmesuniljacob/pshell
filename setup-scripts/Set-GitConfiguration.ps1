@@ -25,7 +25,7 @@ if($reply) {
 				isSuccess -property $p
 				$i++
 			}
-	} while ($i -lt 4)
+	} while ($i -lt 2)
 } else {
 	"Script aborted"
 }

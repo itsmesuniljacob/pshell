@@ -8,7 +8,7 @@
 describe 'Test JAVA installation' {
   $out=&"javac.exe" -version 2>&1
   $version = $out[0].toString().SubString(6,3)
-  it 'should return 1.8 or 1.7 or 1.6' {
+  it 'should not be 1.5' {
     $version | should -Not -Be 1.5
   }
 }
@@ -25,13 +25,13 @@ describe "JDK check, no JRE" {
   $out=&"javac.exe" -version 2>&1
   $version = $out[0].toString().SubString(0,5)
   context "JDK check" {
-    it 'should return 1.8 or 1.7 or 1.6' {
+    it 'should not be 1.5' {
       $version | should -Not -Be 1.5
     }
     $out1=&"java.exe" -version 2>&1
     $actual=$out1[1].toString().SubString(33,11)
     it 'should return java as not recognized command' {
-      $actual | should beexactly "java : The term 'java' is not recognized as the name of a cmdlet"
+      $actual | should beexactly "build 1.8.0"
     }
     it 'should return JRE Found' {
       $actual | should be 'build 1.8.0'
