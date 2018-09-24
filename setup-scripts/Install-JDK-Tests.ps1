@@ -9,7 +9,7 @@ describe 'Test JAVA installation' {
   $out=&"javac.exe" -version 2>&1
   $version = $out[0].toString().SubString(6,3)
   it 'should return 1.8 or 1.7 or 1.6' {
-    $version | should be 1.8 or 1.7 or 1.6
+    $version | should -Not -Be 1.5
   }
 }
 
@@ -24,10 +24,9 @@ describe 'Git installation Check' {
 describe "JDK check, no JRE" {
   $out=&"javac.exe" -version 2>&1
   $version = $out[0].toString().SubString(0,5)
-  $version
   context "JDK check" {
     it 'should return 1.8 or 1.7 or 1.6' {
-      $version | should be 1.8 or 1.7 or 1.6
+      $version | should -Not -Be 1.5
     }
     $out1=&"java.exe" -version 2>&1
     $actual=$out1[1].toString().SubString(33,11)
